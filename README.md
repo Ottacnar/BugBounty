@@ -1,21 +1,37 @@
 # BugBounty
 Tools for Recon
-
+- [Amass](https://github.com/OWASP/Amass)
+- [Assetfinder](https://github.com/tomnomnom/assetfinder)
+- [Chaos](https://github.com/projectdiscovery/chaos-client)
+- [Findomain](https://github.com/Findomain/Findomain)
+- [Haktrails](https://github.com/hakluke/haktrails)
+- [Subfinder](https://github.com/projectdiscovery/subfinder)
 
 # Recon de Subdomínos
 
-- [Chaos](https://github.com/projectdiscovery/chaos-client)
+###  Busca por subdomíos, retirando os duplicados com ANEW
 
-###  .bashrc shortcut OFJAAAH
+```
+amass enum -d <domain> -o <subs>
 
-```bash
-reconjs(){
-gau -subs $1 |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> js.txt ; cat js.txt | anti-burl | awk '{print $4}' | sort -u >> AliveJs.txt
-}
-cert(){
-curl -s "[https://crt.sh/?q=%.$1&output=json](https://crt.sh/?q=%25.$1&output=json)" | jq -r '.[].name_value' | sed 's/\*\.//g' | anew
-}
-anubis(){
-curl -s "[https://jldc.me/anubis/subdomains/$1](https://jldc.me/anubis/subdomains/$1)" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | anew
-}
+```
+```
+assetfinder -subs_only <domain> | anew <subs>
+
+```
+```
+chaos -d <domain> | anew <subs>
+
+```
+```
+findomain -t <domain> -q -u <subs>
+
+```
+```
+echo "domain" | haktrails subdomains| anew <subs>
+
+```
+```
+subfinder -d <domain> | anew <subs>
+
 ```
